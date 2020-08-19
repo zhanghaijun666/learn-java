@@ -1,4 +1,4 @@
-package com.proxy;
+package com.custom.proxy;
 
 /*
 其实每个模式名称就表明了该模式的作⽤，代理模式就是多⼀个代理类出来，替原对象进⾏⼀些操作。
