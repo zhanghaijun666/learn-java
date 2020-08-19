@@ -10,7 +10,7 @@
 	* 目前我们使用的是ApplicationContext对象去创建IoC容器（高级IoC容器）
 
 
-* BeanFactory接口介绍：只能提供回去单个bean的方法
+* BeanFactory接口介绍：只能提供获取单个bean的方法
 	* AutowireCapableBeanFactory子接口：可以将第三方的bean进行自动装配
 	* ConfigurableBeanFactory子接口：对BeanFactory实现配置管理
 	* ListableBeanFactory子接口：可以将BeanFactory中的Bean进行全部回去并遍历
