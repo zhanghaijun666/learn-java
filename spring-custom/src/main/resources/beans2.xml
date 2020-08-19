@@ -1,6 +1,5 @@
 <beans>
-    <bean id="userService"
-          class="com.test.service.UserServiceImpl">
+    <bean id="userService" class="com.test.service.UserServiceImpl">
         <!-- 引用类型 -->
         <property name="userDao" ref="userDao"></property>
     </bean>
@@ -24,6 +23,7 @@
     <aop-config>
         <aop-aspect ref="myAdvice">
             <aop-before method="before" pointcut="execution(* *..*.*ServiceImpl.*(..))"/>
+            <aop-after method="after" pointcut="execution(* *..*.*ServiceImpl.*(..))"/>
         </aop-aspect>
     </aop-config>
 </beans>
