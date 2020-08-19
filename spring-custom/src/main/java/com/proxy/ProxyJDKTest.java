@@ -6,7 +6,7 @@ import java.lang.reflect.Proxy;
 
 public class ProxyJDKTest {
     public static void main(String[] args) throws Exception {
-        JDKProxy proxy = new JDKProxy(new JDKProxyTarget());
+        ProxyJDK proxy = new ProxyJDK(new ProxyTarget());
         ProxyInterface proxyInterface = (ProxyInterface) proxy.invoke();
         System.out.println(proxyInterface.getClass());
         proxyInterface.targetMethod();
@@ -22,17 +22,17 @@ interface ProxyInterface {
     public void targetMethod();
 }
 
-class JDKProxyTarget implements ProxyInterface {
+class ProxyTarget implements ProxyInterface {
     @Override
     public void targetMethod() {
         System.out.println("代理方法...");
     }
 }
 
-class JDKProxy {
+class ProxyJDK {
     private ProxyInterface proxyInterface;
 
-    public JDKProxy(ProxyInterface proxyInterface) {
+    public ProxyJDK(ProxyInterface proxyInterface) {
         this.proxyInterface = proxyInterface;
     }
 

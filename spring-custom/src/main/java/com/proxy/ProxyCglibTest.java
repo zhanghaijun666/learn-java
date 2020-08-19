@@ -16,7 +16,7 @@ public class ProxyCglibTest {
         //设置目标类的字节码文件
         enhancer.setSuperclass(Dao.class);
         //设置回调函数
-        enhancer.setCallback(new DaoProxy());
+        enhancer.setCallback(new ProxyDao());
 
         //这里的creat方法就是正式创建代理类
         Dao proxyDog = (Dao) enhancer.create();
@@ -25,7 +25,7 @@ public class ProxyCglibTest {
     }
 }
 
-class DaoProxy implements MethodInterceptor {
+class ProxyDao implements MethodInterceptor {
     @Override
     public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
         System.out.println("======插入前置通知======");
