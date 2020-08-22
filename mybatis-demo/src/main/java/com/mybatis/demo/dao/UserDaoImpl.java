@@ -1,6 +1,7 @@
-package com.demo.dao;
+package com.mybatis.demo.dao;
 
-import com.model.User;
+
+import com.mybatis.model.User;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 

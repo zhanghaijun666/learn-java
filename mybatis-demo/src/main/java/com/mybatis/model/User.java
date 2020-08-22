@@ -1,4 +1,4 @@
-package com.model;
+package com.mybatis.model;
 
 import java.sql.Date;
 
