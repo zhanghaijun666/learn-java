@@ -1,5 +1,6 @@
 package com.mybatisv2.framework.sqlsource;
 
+
 import com.mybatisv2.framework.config.BoundSql;
 
 public interface SqlSource {

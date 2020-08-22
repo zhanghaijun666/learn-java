@@ -1,7 +1,7 @@
 package com.mybatisv2.framework.sqlnode;
 
 
-import com.mybatisv2.framework.sqlsource.DynamicContext;
+import com.mybatisv2.framework.config.DynamicContext;
 
 public interface SqlNode {
     /**

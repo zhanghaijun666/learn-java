@@ -1,4 +1,4 @@
-package com.mybatisv2.utils;
+package com.utils;
 
 import com.mybatisv2.framework.sqlnode.*;
 import com.mybatisv2.framework.sqlsource.DynamicSqlSource;

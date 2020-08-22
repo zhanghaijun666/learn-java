@@ -1,6 +1,6 @@
 package com.mybatisv2.framework.sqlnode;
 
-import com.mybatisv2.framework.sqlsource.DynamicContext;
+import com.mybatisv2.framework.config.DynamicContext;
 
 import java.util.List;
 
@@ -13,6 +13,7 @@ public class MixedSqlNode implements SqlNode{
     public MixedSqlNode(List<SqlNode> sqlNodeList) {
         this.sqlNodeList = sqlNodeList;
     }
+
     @Override
     public void apply(DynamicContext context) {
         for(SqlNode sqlNode : sqlNodeList){
