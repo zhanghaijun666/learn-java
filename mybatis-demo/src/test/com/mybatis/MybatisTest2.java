@@ -1,9 +1,9 @@
 package com.mybatis;
 
-import com.mybatis.demo.dao.UserDao;
-import com.mybatis.demo.dao.UserDaoImpl;
+import com.mybatis.demo.mapper.UserMapper;
 import com.mybatis.model.User;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Before;
@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.io.InputStream;
 
-public class MybatisTest1 {
+public class MybatisTest2 {
     private SqlSessionFactory sqlSessionFactory;
 
     @Before
@@ -25,8 +25,12 @@ public class MybatisTest1 {
 
     @Test
     public void testFindUserById() {
-        UserDao dao = new UserDaoImpl(sqlSessionFactory);
-        User user = dao.findUserById(1);
+        //创建UserMapper对象
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        //调用UserMapper对象的API
+        User user = mapper.selectByPrimaryKey(1);
         System.out.println(user);
     }
+
 }
