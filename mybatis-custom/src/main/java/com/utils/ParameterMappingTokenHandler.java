@@ -1,9 +1,6 @@
-
 package com.utils;
 
-
-
-import com.mybatisv2.framework.config.ParameterMappingV2;
+import com.mybatisv3.config.ParameterMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,29 +8,28 @@ import java.util.List;
 /**
  * 处理#{}中的参数的
  */
-
 public class ParameterMappingTokenHandler implements TokenHandler {
-	private List<ParameterMappingV2> parameterMappings = new ArrayList<>();
+    private List<ParameterMapping> parameterMappings = new ArrayList<>();
 
-	// content是参数名称
-	// content 就是#{}中的内容
-	@Override
-	public String handleToken(String content) {
-		parameterMappings.add(buildParameterMapping(content));
-		return "?";
-	}
+    // content是参数名称
+    // content 就是#{}中的内容
+    @Override
+    public String handleToken(String content) {
+        parameterMappings.add(buildParameterMapping(content));
+        return "?";
+    }
 
-	private ParameterMappingV2 buildParameterMapping(String content) {
-		ParameterMappingV2 parameterMapping = new ParameterMappingV2(content);
-		return parameterMapping;
-	}
+    private ParameterMapping buildParameterMapping(String content) {
+        ParameterMapping parameterMapping = new ParameterMapping(content);
+        return parameterMapping;
+    }
 
-	public List<ParameterMappingV2> getParameterMappings() {
-		return parameterMappings;
-	}
+    public List<ParameterMapping> getParameterMappings() {
+        return parameterMappings;
+    }
 
-	public void setParameterMappings(List<ParameterMappingV2> parameterMappings) {
-		this.parameterMappings = parameterMappings;
-	}
+    public void setParameterMappings(List<ParameterMapping> parameterMappings) {
+        this.parameterMappings = parameterMappings;
+    }
 
 }

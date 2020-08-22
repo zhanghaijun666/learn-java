@@ -5,7 +5,7 @@ import com.mybatisv2.framework.config.BoundSqlV2;
 import com.mybatisv2.framework.config.DynamicContextV2;
 import com.mybatisv2.framework.sqlnode.SqlNodeV2;
 import com.utils.GenericTokenParser;
-import com.utils.ParameterMappingTokenHandler;
+import com.utils.ParameterMappingTokenHandlerV2;
 
 /**
  * 封装了不带有${}和动态标签的SQL信息，并提供对他们的处理接口
@@ -28,7 +28,7 @@ public class RawSqlSourceV2 implements SqlSourceV2 {
         String sqlText = context.getSql();
         // 2.调用SqlSource的处理逻辑，对于#{}进行处理
         // 处理#{}
-        ParameterMappingTokenHandler tokenHandler = new ParameterMappingTokenHandler();
+        ParameterMappingTokenHandlerV2 tokenHandler = new ParameterMappingTokenHandlerV2();
         GenericTokenParser tokenParser = new GenericTokenParser("#{","}",tokenHandler);
         String sql = tokenParser.parse(sqlText);
 
