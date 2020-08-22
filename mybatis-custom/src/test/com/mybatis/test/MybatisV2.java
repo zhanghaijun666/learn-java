@@ -1,14 +1,14 @@
 package com.mybatis.test;
 
 import com.model.User;
-import com.mybatisv2.framework.config.BoundSql;
-import com.mybatisv2.framework.config.Configuration;
-import com.mybatisv2.framework.config.MappedStatement;
-import com.mybatisv2.framework.config.ParameterMapping;
+import com.mybatisv2.framework.config.BoundSqlV2;
+import com.mybatisv2.framework.config.ConfigurationV2;
+import com.mybatisv2.framework.config.MappedStatementV2;
+import com.mybatisv2.framework.config.ParameterMappingV2;
 import com.mybatisv2.framework.sqlnode.*;
-import com.mybatisv2.framework.sqlsource.DynamicSqlSource;
-import com.mybatisv2.framework.sqlsource.RawSqlSource;
-import com.mybatisv2.framework.sqlsource.SqlSource;
+import com.mybatisv2.framework.sqlsource.DynamicSqlSourceV2;
+import com.mybatisv2.framework.sqlsource.RawSqlSourceV2;
+import com.mybatisv2.framework.sqlsource.SqlSourceV2;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.dom4j.*;
 import org.dom4j.io.SAXReader;
@@ -27,7 +27,7 @@ import java.util.*;
  * 3.使用面向对象思维去理解配置文件封装的类的作用
  */
 public class MybatisV2 {
-    private Configuration configuration;
+    private ConfigurationV2 configuration;
     private String namespace;
     private boolean isDynamic = false;
 
@@ -46,7 +46,7 @@ public class MybatisV2 {
     }
 
     private void loadXML(String location) {
-        configuration = new Configuration();
+        configuration = new ConfigurationV2();
         // TODO 解析XML文件，最终将信息封装到Configuration对象中
         // 获取全局配置文件对应的流对象
         InputStream is = getResourceAsStream(location);
@@ -127,38 +127,38 @@ public class MybatisV2 {
         statementType = statementType == null || statementType == "" ? "prepared" : statementType;
 
         //TODO SqlSource和SqlNode的封装过程
-        SqlSource sqlSource = createSqlSource(selectElement);
+        SqlSourceV2 sqlSource = createSqlSource(selectElement);
 
         // TODO 建议使用构建者模式去优化
-        MappedStatement mappedStatement = new MappedStatement(statementId, resultClass, statementType,
+        MappedStatementV2 mappedStatement = new MappedStatementV2(statementId, resultClass, statementType,
                 sqlSource);
         configuration.addMappedStatement(statementId, mappedStatement);
     }
 
-    private SqlSource createSqlSource(Element selectElement) {
+    private SqlSourceV2 createSqlSource(Element selectElement) {
         //TODO 其他子标签的解析处理
 
-        SqlSource sqlSource = parseScriptNode(selectElement);
+        SqlSourceV2 sqlSource = parseScriptNode(selectElement);
 
         return sqlSource;
     }
 
-    private SqlSource parseScriptNode(Element selectElement) {
+    private SqlSourceV2 parseScriptNode(Element selectElement) {
         //解析所有SQL节点，最终封装到MixedSqlNode中
-        SqlNode mixedSqlNode = parseDynamicTags(selectElement);
+        SqlNodeV2 mixedSqlNode = parseDynamicTags(selectElement);
 
-        SqlSource sqlSource;
+        SqlSourceV2 sqlSource;
         //如果带有${}或者动态SQL标签
         if (isDynamic) {
-            sqlSource = new DynamicSqlSource(mixedSqlNode);
+            sqlSource = new DynamicSqlSourceV2(mixedSqlNode);
         } else {
-            sqlSource = new RawSqlSource(mixedSqlNode);
+            sqlSource = new RawSqlSourceV2(mixedSqlNode);
         }
         return sqlSource;
     }
 
-    private SqlNode parseDynamicTags(Element selectElement) {
-        List<SqlNode> sqlNodes = new ArrayList<>();
+    private SqlNodeV2 parseDynamicTags(Element selectElement) {
+        List<SqlNodeV2> sqlNodes = new ArrayList<>();
 
         //获取select标签的子元素 ：文本类型或者Element类型
         int nodeCount = selectElement.nodeCount();
@@ -173,12 +173,12 @@ public class MybatisV2 {
                     continue;
                 }
                 // 先将sql文本封装到TextSqlNode中
-                TextSqlNode textSqlNode = new TextSqlNode(text.trim());
+                TextSqlNodeV2 textSqlNode = new TextSqlNodeV2(text.trim());
                 if (textSqlNode.isDynamic()) {
                     sqlNodes.add(textSqlNode);
                     isDynamic = true;
                 } else {
-                    sqlNodes.add(new StaticTextSqlNode(text.trim()));
+                    sqlNodes.add(new StaticTextSqlNodeV2(text.trim()));
                 }
 
             } else if (node instanceof Element) {
@@ -189,9 +189,9 @@ public class MybatisV2 {
                 if ("if".equals(name)) {
                     String test = element.attributeValue("test");
                     //递归去解析子元素
-                    SqlNode sqlNode = parseDynamicTags(element);
+                    SqlNodeV2 sqlNode = parseDynamicTags(element);
 
-                    IfSqlNode ifSqlNode = new IfSqlNode(test, sqlNode);
+                    IfSqlNodeV2 ifSqlNode = new IfSqlNodeV2(test, sqlNode);
                     sqlNodes.add(ifSqlNode);
                 } else {
                     // TODO
@@ -200,7 +200,7 @@ public class MybatisV2 {
                 //TODO
             }
         }           //Java是最好的语言
-        return new MixedSqlNode(sqlNodes);
+        return new MixedSqlNodeV2(sqlNodes);
     }
 
 
@@ -280,13 +280,13 @@ public class MybatisV2 {
         ResultSet rs = null;
         try {
             // 获取statement相关的信息MappedStatement
-            MappedStatement mappedStatement = configuration.getMappedStatementById(statementId);
+            MappedStatementV2 mappedStatement = configuration.getMappedStatementById(statementId);
             // 连接的获取
             connection = getConnection();
             // TODO SQL的获取(SqlSource和SqlNode的处理流程)
-            SqlSource sqlSource = mappedStatement.getSqlSource();
+            SqlSourceV2 sqlSource = mappedStatement.getSqlSource();
             // 触发SqlSource和SqlNode的解析处理流程
-            BoundSql boundSql = sqlSource.getBoundSql(param);
+            BoundSqlV2 boundSql = sqlSource.getBoundSql(param);
             String sql = boundSql.getSql();
             // 创建statement
             statement = createStatement(mappedStatement, sql, connection);
@@ -320,7 +320,7 @@ public class MybatisV2 {
         return results;
     }
 
-    private <T> void handleResult(ResultSet rs, MappedStatement mappedStatement, List<T> results) throws Exception {
+    private <T> void handleResult(ResultSet rs, MappedStatementV2 mappedStatement, List<T> results) throws Exception {
         // 遍历查询结果集
         Class clazz = mappedStatement.getResultTypeClass();
 
@@ -361,7 +361,7 @@ public class MybatisV2 {
         return rs;
     }
 
-    private void setParameters(Object param, Statement statement, BoundSql boundSql) throws Exception {
+    private void setParameters(Object param, Statement statement, BoundSqlV2 boundSql) throws Exception {
         if (statement instanceof PreparedStatement) {
             PreparedStatement preparedStatement = (PreparedStatement) statement;
 
@@ -374,9 +374,9 @@ public class MybatisV2 {
                 Map<String, Object> map = (Map<String, Object>) param;
 
                 // TODO 需要解析#{}之后封装的参数集合List<ParameterMapping>
-                List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+                List<ParameterMappingV2> parameterMappings = boundSql.getParameterMappings();
                 for (int i = 0; i < parameterMappings.size(); i++) {
-                    ParameterMapping parameterMapping = parameterMappings.get(i);
+                    ParameterMappingV2 parameterMapping = parameterMappings.get(i);
                     String name = parameterMapping.getName();
                     Object value = map.get(name);
                     // 给map集合中的参数赋值
@@ -390,7 +390,7 @@ public class MybatisV2 {
         }
     }
 
-    private Statement createStatement(MappedStatement mappedStatement, String sql, Connection connection) throws Exception {
+    private Statement createStatement(MappedStatementV2 mappedStatement, String sql, Connection connection) throws Exception {
         String statementType = mappedStatement.getStatementType();
         if ("prepared".equals(statementType)) {
             return connection.prepareStatement(sql);
@@ -400,7 +400,7 @@ public class MybatisV2 {
         return null;
     }
 
-    private String getSql(MappedStatement mappedStatement) {
+    private String getSql(MappedStatementV2 mappedStatement) {
         return null;
     }
 

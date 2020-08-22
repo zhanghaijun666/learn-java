@@ -1,9 +1,9 @@
 package com.mybatisv2.framework.sqlsource;
 
 
-import com.mybatisv2.framework.config.BoundSql;
-import com.mybatisv2.framework.config.DynamicContext;
-import com.mybatisv2.framework.sqlnode.SqlNode;
+import com.mybatisv2.framework.config.BoundSqlV2;
+import com.mybatisv2.framework.config.DynamicContextV2;
+import com.mybatisv2.framework.sqlnode.SqlNodeV2;
 import com.utils.GenericTokenParser;
 import com.utils.ParameterMappingTokenHandler;
 
@@ -15,18 +15,18 @@ import com.utils.ParameterMappingTokenHandler;
  * select * from user where id = 1
  * select * from user where id = 2
  */
-public class DynamicSqlSource implements SqlSource{
+public class DynamicSqlSourceV2 implements SqlSourceV2 {
     // 封装了带有${}或者动态标签的SQL脚本（树状结构）
-    private SqlNode mixedSqlNode ;
+    private SqlNodeV2 mixedSqlNode ;
 
-    public DynamicSqlSource(SqlNode mixedSqlNode) {
+    public DynamicSqlSourceV2(SqlNodeV2 mixedSqlNode) {
         this.mixedSqlNode = mixedSqlNode;
     }
 
     @Override
-    public BoundSql getBoundSql(Object param) {
+    public BoundSqlV2 getBoundSql(Object param) {
         // 1.处理所有的SQL节点，获取合并之后的完整的SQL语句（可能还带有#{}）
-        DynamicContext context = new DynamicContext(param);
+        DynamicContextV2 context = new DynamicContextV2(param);
         mixedSqlNode.apply(context);
         String sqlText = context.getSql();
         // 2.调用SqlSource的处理逻辑，对于#{}进行处理
@@ -35,6 +35,6 @@ public class DynamicSqlSource implements SqlSource{
         GenericTokenParser tokenParser = new GenericTokenParser("#{","}",tokenHandler);
         String sql = tokenParser.parse(sqlText);
 
-        return new BoundSql(sql,tokenHandler.getParameterMappings());
+        return new BoundSqlV2(sql,tokenHandler.getParameterMappings());
     }
 }

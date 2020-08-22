@@ -1,9 +1,9 @@
 package com.utils;
 
 import com.mybatisv2.framework.sqlnode.*;
-import com.mybatisv2.framework.sqlsource.DynamicSqlSource;
-import com.mybatisv2.framework.sqlsource.RawSqlSource;
-import com.mybatisv2.framework.sqlsource.SqlSource;
+import com.mybatisv2.framework.sqlsource.DynamicSqlSourceV2;
+import com.mybatisv2.framework.sqlsource.RawSqlSourceV2;
+import com.mybatisv2.framework.sqlsource.SqlSourceV2;
 import org.dom4j.*;
 import org.dom4j.io.SAXReader;
 
@@ -61,17 +61,17 @@ public class LoadXmlUtils {
         }
     }
 
-    public static SqlSource createSqlSource(Element selectElement) {
-        SqlNode mixedSqlNode = parseDynamicTags(selectElement);
-        if (mixedSqlNode instanceof StaticTextSqlNode) {
-            return new RawSqlSource(mixedSqlNode);
+    public static SqlSourceV2 createSqlSource(Element selectElement) {
+        SqlNodeV2 mixedSqlNode = parseDynamicTags(selectElement);
+        if (mixedSqlNode instanceof StaticTextSqlNodeV2) {
+            return new RawSqlSourceV2(mixedSqlNode);
         } else {
-            return new DynamicSqlSource(mixedSqlNode);
+            return new DynamicSqlSourceV2(mixedSqlNode);
         }
     }
 
-    private static SqlNode parseDynamicTags(Element selectElement) {
-        List<SqlNode> sqlNodes = new ArrayList<>();
+    private static SqlNodeV2 parseDynamicTags(Element selectElement) {
+        List<SqlNodeV2> sqlNodes = new ArrayList<>();
         int nodeCount = selectElement.nodeCount();
         for (int i = 0; i < nodeCount; i++) {
             Node node = selectElement.node(i);
@@ -80,11 +80,11 @@ public class LoadXmlUtils {
                 if (text == null || "".equals(text.trim())) {
                     continue;
                 }
-                TextSqlNode textSqlNode = new TextSqlNode(text.trim());
+                TextSqlNodeV2 textSqlNode = new TextSqlNodeV2(text.trim());
                 if (textSqlNode.isDynamic()) {
                     return textSqlNode;
                 } else {
-                    return new StaticTextSqlNode(text.trim());
+                    return new StaticTextSqlNodeV2(text.trim());
                 }
             } else if (node instanceof Element) {
                 Element element = (Element) node;
@@ -92,8 +92,8 @@ public class LoadXmlUtils {
                 if ("if".equals(name)) {
                     String test = element.attributeValue("test");
                     //递归去解析子元素
-                    SqlNode sqlNode = parseDynamicTags(element);
-                    IfSqlNode ifSqlNode = new IfSqlNode(test, sqlNode);
+                    SqlNodeV2 sqlNode = parseDynamicTags(element);
+                    IfSqlNodeV2 ifSqlNode = new IfSqlNodeV2(test, sqlNode);
                     sqlNodes.add(ifSqlNode);
                 } else {
                     // TODO
@@ -102,6 +102,6 @@ public class LoadXmlUtils {
                 //TODO
             }
         }
-        return new MixedSqlNode(sqlNodes);
+        return new MixedSqlNodeV2(sqlNodes);
     }
 }

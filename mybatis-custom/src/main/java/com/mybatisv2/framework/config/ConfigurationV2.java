@@ -7,10 +7,10 @@ import java.util.Map;
 /**
  * 封装了mybatis中xml文件的所有配置信息
  */
-public class Configuration {
+public class ConfigurationV2 {
     private DataSource dataSource;
 
-    private Map<String,MappedStatement> mappedStatements = new HashMap<>();
+    private Map<String, MappedStatementV2> mappedStatements = new HashMap<>();
 
     public DataSource getDataSource() {
         return dataSource;
@@ -20,11 +20,11 @@ public class Configuration {
         this.dataSource = dataSource;
     }
 
-    public MappedStatement getMappedStatementById(String statementId) {
+    public MappedStatementV2 getMappedStatementById(String statementId) {
         return mappedStatements.get(statementId);
     }
 
-    public void addMappedStatement(String statementId, MappedStatement mappedStatement) {
+    public void addMappedStatement(String statementId, MappedStatementV2 mappedStatement) {
         this.mappedStatements.put(statementId,mappedStatement);
     }
 }

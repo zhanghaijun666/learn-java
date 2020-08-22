@@ -1,11 +1,11 @@
 package com.mybatisv2.framework.config;
 
-import com.mybatisv2.framework.sqlsource.SqlSource;
+import com.mybatisv2.framework.sqlsource.SqlSourceV2;
 
 /**
  * 封装了statement标签中的信息
  */
-public class MappedStatement {
+public class MappedStatementV2 {
     private String statementId;
 
     private String statementType;
@@ -14,9 +14,9 @@ public class MappedStatement {
 
     private Class resultTypeClass;
 
-    private SqlSource sqlSource;
+    private SqlSourceV2 sqlSource;
 
-    public MappedStatement(String statementId, Class resultTypeClass, String statementType, SqlSource sqlSource) {
+    public MappedStatementV2(String statementId, Class resultTypeClass, String statementType, SqlSourceV2 sqlSource) {
         this.statementId = statementId;
         this.statementType = statementType;
         this.resultTypeClass = resultTypeClass;
@@ -55,11 +55,11 @@ public class MappedStatement {
         this.resultTypeClass = resultTypeClass;
     }
 
-    public SqlSource getSqlSource() {
+    public SqlSourceV2 getSqlSource() {
         return sqlSource;
     }
 
-    public void setSqlSource(SqlSource sqlSource) {
+    public void setSqlSource(SqlSourceV2 sqlSource) {
         this.sqlSource = sqlSource;
     }
 }

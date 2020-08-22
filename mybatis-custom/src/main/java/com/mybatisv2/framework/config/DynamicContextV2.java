@@ -6,11 +6,11 @@ import java.util.Map;
 /**
  * 动态上下文
  */
-public class DynamicContext {
+public class DynamicContextV2 {
     private StringBuffer sb = new StringBuffer();
     private Map<String,Object> bindings = new HashMap<>();
 
-    public DynamicContext(Object param) {
+    public DynamicContextV2(Object param) {
         // 为了处理${}时，需要用到入参对象
         this.bindings.put("_parameter",param);
     }

@@ -1,8 +1,6 @@
 <prepared namespace="test">
     <!-- select标签，封装了SQL语句信息、入参类型、结果映射类型 -->
-    <select id="queryUserByParams"
-            resultType="com.model.User"
-            statementType="prepared">
+    <select id="queryUserByParams" resultType="com.model.User" statementType="prepared">
 
         SELECT * FROM user WHERE sex = #{sex} AND username like '%${username}'
         <!-- SELECT * FROM user WHERE id = #{id} AND username like '%${username}' -->

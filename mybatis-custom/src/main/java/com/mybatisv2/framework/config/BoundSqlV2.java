@@ -6,13 +6,13 @@ import java.util.List;
 /**
  * 封装SQL语句和#{}解析出来的参数信息集合
  */
-public class BoundSql {
+public class BoundSqlV2 {
     // 已经解析完成的SQL语句
     private String sql;
 
-    private List<ParameterMapping> parameterMappings = new ArrayList<>();
+    private List<ParameterMappingV2> parameterMappings = new ArrayList<>();
 
-    public BoundSql(String sql, List<ParameterMapping> parameterMappings) {
+    public BoundSqlV2(String sql, List<ParameterMappingV2> parameterMappings) {
         this.sql = sql;
         this.parameterMappings = parameterMappings;
     }
@@ -25,11 +25,11 @@ public class BoundSql {
         this.sql = sql;
     }
 
-    public List<ParameterMapping> getParameterMappings() {
+    public List<ParameterMappingV2> getParameterMappings() {
         return parameterMappings;
     }
 
-    public void addParameterMapping(ParameterMapping parameterMapping) {
+    public void addParameterMapping(ParameterMappingV2 parameterMapping) {
         this.parameterMappings.add(parameterMapping);
     }
 }

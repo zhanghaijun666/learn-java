@@ -1,7 +1,7 @@
 package com.mybatisv2.framework.sqlnode;
 
 
-import com.mybatisv2.framework.config.DynamicContext;
+import com.mybatisv2.framework.config.DynamicContextV2;
 import com.utils.GenericTokenParser;
 import com.utils.OgnlUtils;
 import com.utils.SimpleTypeRegistry;
@@ -10,15 +10,15 @@ import com.utils.TokenHandler;
 /**
  * 封装了带有${}的 SQL文本
  */
-public class TextSqlNode implements SqlNode{
+public class TextSqlNodeV2 implements SqlNodeV2 {
     private String sqlText;
 
-    public TextSqlNode(String sqlText) {
+    public TextSqlNodeV2(String sqlText) {
         this.sqlText = sqlText;
     }
 
     @Override
-    public void apply(DynamicContext context) {
+    public void apply(DynamicContextV2 context) {
         // 处理${}
         GenericTokenParser tokenParser = new GenericTokenParser("${","}",new BindingTokenHandler(context));
         String sql = tokenParser.parse(sqlText);
@@ -35,9 +35,9 @@ public class TextSqlNode implements SqlNode{
     class BindingTokenHandler implements TokenHandler {
 
         // 为了获取入参对象
-        private DynamicContext context;
+        private DynamicContextV2 context;
 
-        public BindingTokenHandler(DynamicContext context) {
+        public BindingTokenHandler(DynamicContextV2 context) {
             this.context = context;
         }
 
