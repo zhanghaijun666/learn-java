@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>10-springboot</artifactId>
-    <name>springboot基础学习</name>
+    <name>10-springboot基础</name>
 
     <parent>
         <artifactId>learn-project</artifactId>

@@ -7,16 +7,28 @@
     <artifactId>learn-project</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
+    <name>学习项目版本控制</name>
+    <description>Demo project for Spring Boot</description>
+
+    <developers>
+        <developer>
+            <name>爱做梦的奋斗青年</name>
+            <email>zhanghaijun_java@163.com</email>
+        </developer>
+    </developers>
+
     <modules>
         <module>10-springboot</module>
         <module>20-springboot-config</module>
     </modules>
-    <name>learn-project</name>
-    <description>Demo project for Spring Boot</description>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
         <spring-boot.version>2.3.5.RELEASE</spring-boot.version>
+        <lombok.version>1.18.2</lombok.version>
     </properties>
 
     <parent>
@@ -46,6 +58,25 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--lombok语法-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!--Hutool Java工具包-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.5.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -53,6 +84,11 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jdbc</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -74,6 +110,11 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-test</artifactId>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>1.1.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

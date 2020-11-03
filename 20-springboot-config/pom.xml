@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>20-springboot-config</artifactId>
-    <name>springboot-配置</name>
+    <name>20-springboot配置</name>
 
     <parent>
         <artifactId>learn-project</artifactId>
